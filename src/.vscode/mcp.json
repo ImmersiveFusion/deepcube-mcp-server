@@ -1,0 +1,24 @@
+{
+   "inputs": [
+    {
+      "type": "promptString",
+      "id": "if-key",
+      "description": "Immersive APM API Key",
+      "password": true
+    }
+  ],
+  "servers": {
+    "IF.APM.App.MCP.Server": {
+      "type": "stdio",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/IF.APM.App.MCP.Server/IF.APM.App.MCP.Server.csproj"
+      ],
+       "env": {
+        "IF_ApiKey": "${input:if-key}"
+      }
+    }
+  }
+}
