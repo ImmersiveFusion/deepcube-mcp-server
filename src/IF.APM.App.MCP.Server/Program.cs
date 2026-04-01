@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Authentication;
+using IF.Api.Http.Abstractions;
 using IF.APM.App.Http.Api.Client;
-using IF.Http.Api.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
