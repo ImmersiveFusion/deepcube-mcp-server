@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="../tests/IF.APM.App.MCP.Server.UnitTests/IF.APM.App.MCP.Server.UnitTests.csproj" />
+  <Project Path="IF.APM.App.MCP.Server/IF.APM.App.MCP.Server.csproj" />
+</Solution>
