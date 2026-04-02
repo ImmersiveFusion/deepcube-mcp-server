@@ -109,7 +109,8 @@ public static class DiagnosticsTool
 
     [McpServerTool, Description(
         "Shows current alert status derived from system health thresholds. " +
-        "Use this to answer 'Are there any alerts?', 'Is anyone being notified?', or 'Should someone be paged?'.")]
+        "Use this to answer 'Are there any alerts?', 'Is anyone being notified?', or 'Should someone be paged?'. " +
+        "This is a summary — for root cause details, follow up with GetDiagnosis.")]
     public static async Task<string> GetAlertSummary(IAPMClient client, GridAnchor anchor,
         [Description("Beginning of the range (optional, defaults to 15 minutes ago)")] DateTimeOffset? rangeStart = null,
         [Description("End of the range (optional, defaults to now)")] DateTimeOffset? rangeEnd = null)
