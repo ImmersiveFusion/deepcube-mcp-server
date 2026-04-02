@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IF.APM.App.Http.Api.Client" Version="3.129.0" />
+    <PackageReference Include="IF.APM.App.Http.Api.Client" Version="3.131.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.5" />
     <PackageReference Include="ModelContextProtocol" Version="1.2.0" />

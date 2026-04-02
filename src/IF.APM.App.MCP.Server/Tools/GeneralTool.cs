@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Text.Json;
 using IF.APM.App.Http.Api.Client;
 using ModelContextProtocol.Server;
@@ -9,20 +9,16 @@ namespace IF.APM.App.MCP.Server.Tools;
 public static class GeneralTool
 {
     [McpServerTool, Description("Gets the current grid information")]
-    public static string GridInformation(IGeneralClient client, GridAnchor anchor)
+    public static async Task<string> GridInformation(IGeneralClient client, GridAnchor anchor)
     {
         try
         {
-            var grid = client.GetGridAsync(anchor.GridSecondaryId).GetAwaiter().GetResult();
-
+            var grid = await client.GetGridAsync(anchor.GridSecondaryId);
             return JsonSerializer.Serialize(grid);
-
-
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return e.Message;
+            return JsonSerializer.Serialize(new { error = "Failed to retrieve grid information." });
         }
-
     }
 }
