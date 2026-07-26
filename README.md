@@ -1,16 +1,16 @@
 # Immersive APM MCP Server
 Welcome to Immersive APM MCP Server, an open-source Model Context Protocol (MCP) server designed to seamlessly integrate with Visual Studio Code (VS Code) and GitHub Copilot in agent mode. This powerful tool empowers developers to interact with application telemetry directly within the VS Code editor, streamlining workflows and enhancing productivity with real-time insights into your software's performance.
 
-# 🚀 Features
+## 🚀 Features
 * **Seamless VS Code Integration**: Interact with your application's telemetry data right from the VS Code editor using GitHub Copilot's agent mode.
 * **Open Source**: Freely available under the MIT license, encouraging community contributions and transparency.
 * **Easy Telemetry Access**: Query and analyze application performance metrics effortlessly using natural language prompts in agent mode.
 * **Extensible MCP Support**: Connects to the Model Context Protocol ecosystem, enabling integration with a variety of tools and services.
 * **Autonomous Workflows**: Leverage Copilot’s agent mode to automate multi-step tasks, such as retrieving telemetry data, analyzing performance, and generating reports.
 * **Developer-Friendly**: Designed for ease of use, with minimal setup required to start interacting with telemetry data.
-# 🌟 Why Immersive APM MCP Server?
+## 🌟 Why Immersive APM MCP Server?
 Immersive APM MCP Server makes it incredibly easy to monitor and interact with your application's telemetry directly within your coding environment. By integrating with VS Code and GitHub Copilot’s agent mode, you can use natural language to query metrics, debug performance issues, and optimize your application without leaving your editor. Whether you're a solo developer or part of a large team, this tool simplifies access to critical telemetry data, saving you time and effort.
-# 🛠️ Installation
+## 🛠️ Installation
 ## Clone the Repository:
 ```powershell
 git clone https://github.com/ImmersiveFusion/if-apm-mcp-server.git
@@ -68,7 +68,7 @@ Example configuration:
     * Select Agent from the mode dropdown in the Copilot Chat pane.
     * Ensure the Immersive APM MCP Server is running and configured as an MCP server in VS Code. Refer to the VS Code documentation for details on MCP server setup.
 
-# 🌍 Open Source
+## 🌍 Open Source
 Immersive APM MCP Server is proudly open source under the MIT License (LICENSE). We believe in the power of community-driven development and welcome contributions from developers worldwide. You can:
 
 * Contribute: Submit pull requests, report issues, or suggest features on our GitHub repository.
@@ -77,7 +77,7 @@ Immersive APM MCP Server is proudly open source under the MIT License (LICENSE).
 
 By open-sourcing Immersive APM, we aim to foster a vibrant ecosystem where developers can build, share, and improve tools for application performance monitoring.
 
-# 🔧 Usage Example
+## 🔧 Usage Example
 
 Here’s a quick example of how to use Immersive APM MCP Server with GitHub Copilot in VS Code:
 * Open a project in VS Code.
@@ -128,5 +128,4 @@ Thanks to the GitHub Copilot team for their innovative work on agent mode and MC
 Shoutout to the VS Code community for their continuous feedback and contributions to open-source AI tools.
 
 ## 📬 Contact
-Have questions or need supportទ
-System: support? Join our GitHub Discussions or reach out on social media or join our [Discord](https://discord.com/channels/946854209272287333/1388020870890655844).
+Have questions or need support? Join our GitHub Discussions, reach out on social media, or join our [Discord](https://discord.com/channels/946854209272287333/1388020870890655844).
