@@ -33,13 +33,13 @@ jobs:
         run: dotnet publish src/IF.APM.App.MCP.Server/IF.APM.App.MCP.Server.csproj --configuration Release --runtime ${{ matrix.rid }} --self-contained true --output ./publish
 
       - name: Package
-        run: cd publish && zip -r ../if-apm-mcp-server-${{ matrix.suffix }}.zip .
+        run: cd publish && zip -r ../${{ github.event.repository.name }}-${{ matrix.suffix }}.zip .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: if-apm-mcp-server-${{ matrix.suffix }}
-          path: if-apm-mcp-server-${{ matrix.suffix }}.zip
+          name: ${{ github.event.repository.name }}-${{ matrix.suffix }}
+          path: ${{ github.event.repository.name }}-${{ matrix.suffix }}.zip
 
   test:
     runs-on: ubuntu-latest
