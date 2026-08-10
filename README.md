@@ -127,4 +127,4 @@ Thanks to the GitHub Copilot team for their innovative work on agent mode and MC
 Shoutout to the VS Code community for their continuous feedback and contributions to open-source AI tools.
 
 ## 📬 Contact
-Have questions or need support? Join our GitHub Discussions, reach out on social media, or join our [Discord](https://discord.com/channels/946854209272287333/1388020870890655844). Learn more at [deepcube.ai](https://deepcube.ai).
+Have questions or need support? Join our GitHub Discussions, reach out on social media, or join our [Discord](https://discord.gg/DKhCup3yDQ). Learn more at [deepcube.ai](https://deepcube.ai).
