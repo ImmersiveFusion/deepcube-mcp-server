@@ -23,7 +23,7 @@ var baseUrl = builder.Configuration["BaseUrl"];
 
 var securityClient = new SecurityClient(new ApiClientConfiguration
 {
-    BaseUrl = baseUrl ?? "https://api-azure.iapm.app"
+    BaseUrl = baseUrl ?? "https://api-azure.deepcube.ai"
 }, new HttpClient());
 
 var bootstrapper = new Bootstrapper(securityClient);

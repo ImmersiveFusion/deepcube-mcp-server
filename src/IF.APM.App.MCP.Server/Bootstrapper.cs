@@ -30,7 +30,7 @@ public class Bootstrapper
                 "API Key was not provided. Please set the IF_ApiKey environment variable.");
         }
 
-        var resolvedBaseUrl = baseUrl ?? "https://api-azure.iapm.app";
+        var resolvedBaseUrl = baseUrl ?? "https://api-azure.deepcube.ai";
 
         var wrapViewModel = await _securityClient.UnwrapApiKeyAsync(new UnwrapApiKeyModel(apiKey));
         var accessToken = wrapViewModel.Token;
