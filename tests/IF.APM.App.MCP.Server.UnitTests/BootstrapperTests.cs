@@ -100,7 +100,7 @@ public class BootstrapperTests
 
         result.GridSecondaryId.Should().Be(gridId);
         result.AccessToken.Should().Be(token);
-        result.BaseUrl.Should().Be("https://api-azure.iapm.app");
+        result.BaseUrl.Should().Be("https://api-azure.deepcube.ai");
     }
 
     [Test]
