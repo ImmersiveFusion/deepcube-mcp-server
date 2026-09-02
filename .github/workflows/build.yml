@@ -9,38 +9,6 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - rid: linux-x64
-            suffix: linux-amd64
-          - rid: linux-arm64
-            suffix: linux-arm64
-          - rid: win-x64
-            suffix: windows-amd64
-          - rid: osx-arm64
-            suffix: darwin-arm64
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Publish
-        run: dotnet publish src/IF.APM.App.MCP.Server/IF.APM.App.MCP.Server.csproj --configuration Release --runtime ${{ matrix.rid }} --self-contained true --output ./publish
-
-      - name: Package
-        run: cd publish && zip -r ../${{ github.event.repository.name }}-${{ matrix.suffix }}.zip .
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ github.event.repository.name }}-${{ matrix.suffix }}
-          path: ${{ github.event.repository.name }}-${{ matrix.suffix }}.zip
-
   test:
     runs-on: ubuntu-latest
     steps:
@@ -52,6 +20,57 @@ jobs:
 
       - name: Test
         run: dotnet test src/IF.APM.App.MCP.slnx --configuration Release --verbosity normal
+
+  build:
+    # Every archive contains a single self-contained `dcp` executable, so a
+    # user downloads one file and points their MCP client straight at it.
+    # No .NET runtime needed on the target machine.
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - rid: win-x64
+            suffix: windows-amd64
+          - rid: win-arm64
+            suffix: windows-arm64
+          - rid: linux-x64
+            suffix: linux-amd64
+          - rid: linux-arm64
+            suffix: linux-arm64
+          - rid: osx-x64
+            suffix: darwin-amd64
+          - rid: osx-arm64
+            suffix: darwin-arm64
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish
+        run: >
+          dotnet publish src/IF.APM.App.MCP.Server/IF.APM.App.MCP.Server.csproj
+          --configuration Release
+          --runtime ${{ matrix.rid }}
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true
+          -p:DebugType=none
+          --output ./publish
+
+      - name: Package
+        run: |
+          cp LICENSE README.md publish/
+          mkdir -p dist
+          zip -j dist/dcp-${{ matrix.suffix }}.zip publish/*
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dcp-${{ matrix.suffix }}
+          path: dist/dcp-${{ matrix.suffix }}.zip
 
   release:
     needs: [build, test]

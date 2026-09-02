@@ -167,12 +167,12 @@ public class DiagnosticsToolTests
     }
 
     [Test]
-    public async Task GetDeploymentChanges_Returns_Safe_Error_When_Client_Throws()
+    public async Task GetDeploymentCorrelation_Returns_Safe_Error_When_Client_Throws()
     {
         _client.GetDeploymentChangesAsync(Arg.Any<Guid>(), Arg.Any<DateTimeOffset?>(), Arg.Any<DateTimeOffset?>())
             .ThrowsAsync(new Exception("error"));
 
-        var result = await DiagnosticsTool.GetDeploymentChanges(_client, _anchor);
+        var result = await DiagnosticsTool.GetDeploymentCorrelation(_client, _anchor);
 
         result.Should().Contain("Failed to retrieve deployment changes");
     }

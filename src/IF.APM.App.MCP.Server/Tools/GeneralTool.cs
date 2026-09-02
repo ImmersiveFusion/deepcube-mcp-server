@@ -5,11 +5,23 @@ using ModelContextProtocol.Server;
 
 namespace IF.APM.App.MCP.Server.Tools;
 
+/// <summary>
+/// Grid metadata. Mirrors the Unity client's GetGridInfo tool.
+///
+/// Every tool pins its Name explicitly. Without it the MCP SDK derives the
+/// advertised name from the method name and snake_cases it (GetTraces becomes
+/// get_traces), which would rename the whole surface on an SDK upgrade and
+/// break parity with the Unity client.
+/// </summary>
 [McpServerToolType]
 public static class GeneralTool
 {
-    [McpServerTool, Description("Gets the current grid information")]
-    public static async Task<string> GridInformation(IGeneralClient client, GridAnchor anchor)
+    [McpServerTool(Name = "GetGridInfo"), Description(
+        "Retrieves metadata about the current grid (monitoring environment/workspace). " +
+        "Returns the grid's name, configuration, and properties. " +
+        "Use this only when you need to know which environment the user is viewing. " +
+        "For system health or diagnostics, use GetSystemHealth or GetDiagnosis instead.")]
+    public static async Task<string> GetGridInfo(IGeneralClient client, GridAnchor anchor)
     {
         try
         {
@@ -18,7 +30,7 @@ public static class GeneralTool
         }
         catch (Exception)
         {
-            return JsonSerializer.Serialize(new { error = "Failed to retrieve grid information." });
+            return ToolGuards.Error("Failed to retrieve grid information.");
         }
     }
 }
