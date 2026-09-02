@@ -8,13 +8,13 @@
     }
   ],
   "servers": {
-    "IF.APM.App.MCP.Server": {
+    "deepcube": {
       "type": "stdio",
       "command": "dotnet",
       "args": [
         "run",
         "--project",
-        "${workspaceFolder}/IF.APM.App.MCP.Server/IF.APM.App.MCP.Server.csproj"
+        "${workspaceFolder}/src/IF.APM.App.MCP.Server/IF.APM.App.MCP.Server.csproj"
       ],
        "env": {
         "IF_ApiKey": "${input:if-key}"

@@ -1,0 +1,35 @@
+<Project>
+
+  <!--
+    Central Package Management: the single source of truth for every
+    PackageReference version in this repository. Each .csproj references
+    packages by name only; versions live here.
+
+    Conventions:
+      - Group by purpose (Runtime / Test), sorted alphabetically within a group.
+      - Use VersionOverride in a csproj only with a comment explaining why.
+      - No GlobalPackageReference; vanilla CPM only.
+  -->
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup Label="Runtime">
+    <PackageVersion Include="IF.APM.App.Http.Api.Client" Version="3.178.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.11" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.11" />
+    <PackageVersion Include="ModelContextProtocol" Version="2.2.0" />
+    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.22.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Test">
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+    <PackageVersion Include="FluentAssertions" Version="8.10.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
+    <PackageVersion Include="NSubstitute" Version="6.2.0" />
+    <PackageVersion Include="NUnit" Version="4.6.1" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="6.3.0" />
+  </ItemGroup>
+
+</Project>

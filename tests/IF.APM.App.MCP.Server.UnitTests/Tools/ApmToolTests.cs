@@ -232,35 +232,35 @@ public class ApmToolTests
         result.Should().Contain("Invalid traceId format");
     }
 
-    // ── GetTraceSpanErrors ──
+    // ── GetTraceErrors ──
 
     [Test]
-    public async Task GetTraceSpanErrors_Returns_Valid_Json()
+    public async Task GetTraceErrors_Returns_Valid_Json()
     {
         _client.GetTraceErrorsAsync(_anchor.GridSecondaryId, "trace1")
             .Returns(Task.FromResult(BuildTraceErrorList()));
 
-        var result = await ApmTool.GetTraceSpanErrors(_client, _anchor, "trace1");
+        var result = await ApmTool.GetTraceErrors(_client, _anchor, "trace1");
 
         var act = () => JsonSerializer.Deserialize<JsonElement>(result);
         act.Should().NotThrow();
     }
 
     [Test]
-    public async Task GetTraceSpanErrors_Returns_Safe_Error_When_Client_Throws()
+    public async Task GetTraceErrors_Returns_Safe_Error_When_Client_Throws()
     {
         _client.GetTraceErrorsAsync(Arg.Any<Guid>(), Arg.Any<string>())
             .ThrowsAsync(new Exception("Server error"));
 
-        var result = await ApmTool.GetTraceSpanErrors(_client, _anchor, "abc");
+        var result = await ApmTool.GetTraceErrors(_client, _anchor, "abc");
 
         result.Should().Contain("Failed to retrieve trace errors");
     }
 
     [Test]
-    public async Task GetTraceSpanErrors_Rejects_Invalid_TraceId()
+    public async Task GetTraceErrors_Rejects_Invalid_TraceId()
     {
-        var result = await ApmTool.GetTraceSpanErrors(_client, _anchor, "../../../etc/passwd");
+        var result = await ApmTool.GetTraceErrors(_client, _anchor, "../../../etc/passwd");
 
         result.Should().Contain("Invalid traceId format");
     }

@@ -1,0 +1,27 @@
+<Project>
+
+  <!--
+    Repo-wide build settings. Every project in this repository targets
+    .NET 10 (server and test harness alike); pin it here so the two cannot
+    drift apart.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <!-- Release version. A tag matching this value triggers .github/workflows/build.yml. -->
+  <PropertyGroup>
+    <Version>0.2.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package metadata">
+    <Authors>Immersive Fusion LLC</Authors>
+    <Company>Immersive Fusion LLC</Company>
+    <Copyright>Copyright (c) Immersive Fusion LLC. All rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/ImmersiveFusion/deepcube-mcp-server</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+</Project>
