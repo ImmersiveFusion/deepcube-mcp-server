@@ -1,0 +1,64 @@
+name: CI
+
+# Runs on every pull request and on pushes to main.
+# Release packaging stays in build.yml, which triggers on version tags only.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Test
+        run: dotnet test src/IF.APM.App.MCP.slnx --configuration Release --verbosity normal
+
+  package:
+    # Publishing only ran at tag time, so a broken single-file publish stayed
+    # invisible until a release was already being cut. One representative RID
+    # here catches that on the pull request instead.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish
+        run: >
+          dotnet publish src/IF.APM.App.MCP.Server/IF.APM.App.MCP.Server.csproj
+          --configuration Release
+          --runtime linux-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true
+          -p:DebugType=none
+          --output ./publish
+
+      - name: Verify the published binary is a single self-contained dcp
+        run: |
+          test -f publish/dcp || { echo "expected publish/dcp"; ls -la publish; exit 1; }
+          extra=$(find publish -maxdepth 1 -type f ! -name dcp | wc -l)
+          if [ "$extra" -ne 0 ]; then
+            echo "publish output is not a single file:"
+            ls -la publish
+            exit 1
+          fi
+          chmod +x publish/dcp
+          # No API key here, so the server must fail on the key and nothing else.
+          output=$(./publish/dcp </dev/null 2>&1 || true)
+          echo "$output" | head -3
+          echo "$output" | grep -q "API Key was not provided" || {
+            echo "binary did not reach its startup key check"; exit 1; }
