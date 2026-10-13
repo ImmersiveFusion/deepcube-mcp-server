@@ -18,6 +18,8 @@ builder.Logging.AddConsole(consoleLogOptions =>
     consoleLogOptions.LogToStandardErrorThreshold = LogLevel.Trace;
 });
 
+// IF_Token: a personal access token for one grid. IF_ApiKey: a grid API key (see Bootstrapper).
+var token = builder.Configuration["Token"];
 var apiKey = builder.Configuration["ApiKey"];
 var baseUrl = builder.Configuration["BaseUrl"];
 
@@ -27,7 +29,7 @@ var securityClient = new SecurityClient(new ApiClientConfiguration
 }, new HttpClient());
 
 var bootstrapper = new Bootstrapper(securityClient);
-var result = await bootstrapper.InitializeAsync(apiKey, baseUrl);
+var result = await bootstrapper.InitializeAsync(token, apiKey, baseUrl);
 
 var config = new ApiClientConfiguration
 {

@@ -16,15 +16,21 @@ The server ships as a single self-contained executable named **`dcp`**. It has n
 dependencies: you do not need the .NET runtime, or anything else, on the machine
 that runs it.
 
-### 1. Get an API key
+### 1. Create a personal access token
 
-You need a DeepCube Grid API key. Your grids and keys live in the
-[DeepCube portal](https://portal.deepcube.ai). If you do not have a subscription yet,
-start with the [Getting Started](https://docs.deepcube.ai/Getting-Started) guide.
+The server reads one grid with a **personal access token** bound to that grid. Create it
+on the grid's page in the [DeepCube portal](https://portal.deepcube.ai), under
+**Personal access tokens**, and copy it when it is shown: it is shown once. A token can
+last up to 90 days; create a new one when it expires. If you do not have a subscription
+yet, start with the [Getting Started](https://docs.deepcube.ai/Getting-Started) guide.
 
-The key identifies which grid the server reads, so anyone holding it can read that
-grid's telemetry. Treat it as a secret: keep it out of source control and out of
-anything you share.
+**Use a personal access token, not a grid API key.** A grid API key is for sending
+telemetry, and keys created or rotated from October 2026 can do nothing else, so the
+server cannot read with them. It says so at startup. A key created before then still
+works until you rotate it.
+
+The token reads that grid's telemetry as you, so treat it as a secret: keep it out of
+source control and out of anything you share.
 
 ### 2. Download the binary
 
@@ -65,19 +71,19 @@ xattr -d com.apple.quarantine ~/.local/bin/dcp
 
 ### 3. Point your MCP client at it
 
-The server speaks MCP over stdio and reads its key from the `IF_ApiKey` environment
+The server speaks MCP over stdio and reads its token from the `IF_Token` environment
 variable. Use the full path to the binary you unzipped.
 
 **VS Code with GitHub Copilot** — `.vscode/mcp.json` in your workspace. This form prompts
-for the key and stores it in VS Code's secret storage rather than in the file:
+for the token and stores it in VS Code's secret storage rather than in the file:
 
 ```json
 {
   "inputs": [
     {
       "type": "promptString",
-      "id": "if-key",
-      "description": "DeepCube API Key",
+      "id": "if-token",
+      "description": "DeepCube personal access token",
       "password": true
     }
   ],
@@ -86,7 +92,7 @@ for the key and stores it in VS Code's secret storage rather than in the file:
       "type": "stdio",
       "command": "C:\\Users\\you\\AppData\\Local\\Programs\\dcp\\dcp.exe",
       "env": {
-        "IF_ApiKey": "${input:if-key}"
+        "IF_Token": "${input:if-token}"
       }
     }
   }
@@ -96,7 +102,7 @@ for the key and stores it in VS Code's secret storage rather than in the file:
 **Claude Code**:
 
 ```bash
-claude mcp add --scope local deepcube -e IF_ApiKey=<your-key> -- ~/.local/bin/dcp
+claude mcp add --scope local deepcube -e IF_Token=<your-token> -- ~/.local/bin/dcp
 ```
 
 **Claude Desktop, Cursor, and other clients** take the same shape in their own config
@@ -107,7 +113,7 @@ file:
   "mcpServers": {
     "deepcube": {
       "command": "/absolute/path/to/dcp",
-      "env": { "IF_ApiKey": "<your-key>" }
+      "env": { "IF_Token": "<your-token>" }
     }
   }
 }
@@ -124,12 +130,13 @@ Restart your client and confirm the server connects. In Claude Code:
 claude mcp list
 ```
 
-You should see `deepcube: ... - ✓ Connected`, which means the key was accepted and the
+You should see `deepcube: ... - ✓ Connected`, which means the token was accepted and the
 server read your grid. Then ask your agent something like *"is everything ok?"* and it
 should call `GetSystemHealth`.
 
-If it fails to start, run `dcp` directly in a terminal with `IF_ApiKey` set: it writes
-startup errors, including an invalid or expired key, to standard error.
+If it fails to start, run `dcp` directly in a terminal with `IF_Token` set: it writes
+startup errors, including an expired token or a grid API key that can only send
+telemetry, to standard error.
 
 ## 🧑‍💻 Building from source
 
