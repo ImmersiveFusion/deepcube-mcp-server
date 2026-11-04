@@ -80,7 +80,24 @@ public class BootstrapperTests
 
         result.GridSecondaryId.Should().Be(gridId);
         result.AccessToken.Should().Be(token);
-        result.BaseUrl.Should().Be("https://api-azure.deepcube.ai");
+        result.BaseUrl.Should().Be("https://web.deepcube.ai");
+    }
+
+    // api-azure.deepcube.ai was retired (founder 2026-11-04, SP-136); web.deepcube.ai is the single API host.
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("   ")]
+    public void ResolveBaseUrl_Uses_The_Default_When_Unset(string? baseUrl)
+    {
+        Bootstrapper.ResolveBaseUrl(baseUrl).Should().Be(Bootstrapper.DefaultBaseUrl);
+        Bootstrapper.DefaultBaseUrl.Should().Be("https://web.deepcube.ai");
+    }
+
+    [TestCase("https://custom.api.com", "https://custom.api.com")]
+    [TestCase(" https://custom.api.com/ ", "https://custom.api.com")]
+    public void ResolveBaseUrl_Keeps_An_Override(string baseUrl, string expected)
+    {
+        Bootstrapper.ResolveBaseUrl(baseUrl).Should().Be(expected);
     }
 
     [Test]

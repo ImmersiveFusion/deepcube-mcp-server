@@ -15,6 +15,13 @@ public class BootstrapResult
 
 public class Bootstrapper
 {
+    /// <summary>The API the server reads from unless <c>IF_BaseUrl</c> names another.</summary>
+    public const string DefaultBaseUrl = "https://web.deepcube.ai";
+
+    /// <summary>Returns <paramref name="baseUrl"/> when it is set, else <see cref="DefaultBaseUrl"/>.</summary>
+    public static string ResolveBaseUrl(string? baseUrl) =>
+        string.IsNullOrWhiteSpace(baseUrl) ? DefaultBaseUrl : baseUrl.Trim().TrimEnd('/');
+
     /// <summary>The scope a token needs to read a grid's telemetry.</summary>
     public const string MemberScope = "member";
 
@@ -56,7 +63,7 @@ public class Bootstrapper
                 $"No credential was provided. Set IF_Token to a personal access token for the grid. {HowToGetAPat}");
         }
 
-        var resolvedBaseUrl = baseUrl ?? "https://api-azure.deepcube.ai";
+        var resolvedBaseUrl = ResolveBaseUrl(baseUrl);
 
         string accessToken;
         string source;

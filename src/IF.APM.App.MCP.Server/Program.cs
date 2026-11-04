@@ -1,3 +1,4 @@
+using System.Security.Authentication;
 using IF.Api.Http.Abstractions;
 using IF.APM.App.Http.Api.Client;
 using IF.APM.App.MCP.Server;
@@ -19,17 +20,35 @@ builder.Logging.AddConsole(consoleLogOptions =>
 });
 
 // IF_Token: a personal access token for one grid. IF_ApiKey: a grid API key (see Bootstrapper).
+// IF_BaseUrl: overrides the API host; unset, the server uses Bootstrapper.DefaultBaseUrl.
 var token = builder.Configuration["Token"];
 var apiKey = builder.Configuration["ApiKey"];
-var baseUrl = builder.Configuration["BaseUrl"];
+var baseUrl = Bootstrapper.ResolveBaseUrl(builder.Configuration["BaseUrl"]);
 
 var securityClient = new SecurityClient(new ApiClientConfiguration
 {
-    BaseUrl = baseUrl ?? "https://api-azure.deepcube.ai"
+    BaseUrl = baseUrl
 }, new HttpClient());
 
 var bootstrapper = new Bootstrapper(securityClient);
-var result = await bootstrapper.InitializeAsync(token, apiKey, baseUrl);
+BootstrapResult result;
+try
+{
+    result = await bootstrapper.InitializeAsync(token, apiKey, baseUrl);
+}
+catch (AuthenticationException ex)
+{
+    // A plain line on stderr, not a stack trace: the MCP client only says "connection closed".
+    await Console.Error.WriteLineAsync($"dcp: {ex.Message}");
+    return 1;
+}
+catch (HttpRequestException ex)
+{
+    await Console.Error.WriteLineAsync(
+        $"dcp: could not reach the DeepCube API at {baseUrl} ({ex.Message}). " +
+        "Check the network, or set IF_BaseUrl to the API you use.");
+    return 1;
+}
 
 var config = new ApiClientConfiguration
 {
@@ -51,6 +70,7 @@ builder.Services
 
 // Build and run the host. This starts the MCP server.
 await builder.Build().RunAsync();
+return 0;
 
 public class GridAnchor
 {

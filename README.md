@@ -119,7 +119,7 @@ file:
 }
 ```
 
-By default the server talks to `https://api-azure.deepcube.ai`. Set `IF_BaseUrl` in the
+By default the server talks to `https://web.deepcube.ai`. Set `IF_BaseUrl` in the
 same `env` block to point it somewhere else.
 
 ### 4. Verify
