@@ -18,11 +18,29 @@ that runs it.
 
 ### 1. Create a personal access token
 
-The server reads one grid with a **personal access token** bound to that grid. Create it
-on the grid's page in the [DeepCube portal](https://portal.deepcube.ai), under
-**Personal access tokens**, and copy it when it is shown: it is shown once. A token can
+The server reads one grid with a **personal access token** bound to that grid. A token can
 last up to 90 days; create a new one when it expires. If you do not have a subscription
 yet, start with the [Getting Started](https://docs.deepcube.ai/Getting-Started) guide.
+
+The portal does not have a screen for creating these tokens yet. Until it does, create
+one from the API's help page:
+
+1. Open [web.deepcube.ai/help](https://web.deepcube.ai/help), choose **Authorize**, and
+   sign in with your DeepCube account.
+2. Find `POST /tokens/personal-access`, choose **Try it out**, and send this body, with
+   your grid's ID:
+
+   ```json
+   {
+     "scopes": ["member"],
+     "gridSecondaryId": "<your grid id>",
+     "expirationInSeconds": 2592000
+   }
+   ```
+
+   `member` lets the token read. `2592000` seconds is 30 days, the recommended
+   lifetime; the most the API allows is 90 days.
+3. Copy the token from the response. It is not shown again.
 
 **Use a personal access token, not a grid API key.** A grid API key is for sending
 telemetry, and keys created or rotated from October 2026 can do nothing else, so the
