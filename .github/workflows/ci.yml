@@ -57,8 +57,14 @@ jobs:
             exit 1
           fi
           chmod +x publish/dcp
-          # No API key here, so the server must fail on the key and nothing else.
-          output=$(./publish/dcp </dev/null 2>&1 || true)
+          # No credential here, so the server must stop at its credential check, with one plain line and exit 1.
+          set +e
+          output=$(./publish/dcp </dev/null 2>&1)
+          code=$?
+          set -e
           echo "$output" | head -3
-          echo "$output" | grep -q "API Key was not provided" || {
-            echo "binary did not reach its startup key check"; exit 1; }
+          echo "$output" | grep -q "dcp: No credential was provided" || {
+            echo "binary did not reach its startup credential check"; exit 1; }
+          [ "$code" -eq 1 ] || { echo "expected exit code 1, got $code"; exit 1; }
+          if echo "$output" | grep -q "Unhandled exception"; then
+            echo "startup failure is a stack trace, not one plain line"; exit 1; fi
