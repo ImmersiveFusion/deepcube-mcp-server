@@ -22,25 +22,11 @@ The server reads one grid with a **personal access token** bound to that grid. A
 last up to 90 days; create a new one when it expires. If you do not have a subscription
 yet, start with the [Getting Started](https://docs.deepcube.ai/Getting-Started) guide.
 
-The portal does not have a screen for creating these tokens yet. Until it does, create
-one from the API's help page:
+Creating these tokens yourself in the portal is coming soon. Until then:
 
-1. Open [web.deepcube.ai/help](https://web.deepcube.ai/help), choose **Authorize**, and
-   sign in with your DeepCube account.
-2. Find `POST /tokens/personal-access`, choose **Try it out**, and send this body, with
-   your grid's ID:
-
-   ```json
-   {
-     "scopes": ["member"],
-     "gridSecondaryId": "<your grid id>",
-     "expirationInSeconds": 2592000
-   }
-   ```
-
-   `member` lets the token read. `2592000` seconds is 30 days, the recommended
-   lifetime; the most the API allows is 90 days.
-3. Copy the token from the response. It is not shown again.
+- If your grid API key was created before October 2026 and has not been rotated, it still
+  reads: set it in `IF_ApiKey` instead of `IF_Token`.
+- Otherwise, contact DeepCube support for a personal access token for your grid.
 
 **Use a personal access token, not a grid API key.** A grid API key is for sending
 telemetry, and keys created or rotated from October 2026 can do nothing else, so the
@@ -92,7 +78,7 @@ xattr -d com.apple.quarantine ~/.local/bin/dcp
 The server speaks MCP over stdio and reads its token from the `IF_Token` environment
 variable. Use the full path to the binary you unzipped.
 
-**VS Code with GitHub Copilot** — `.vscode/mcp.json` in your workspace. This form prompts
+**VS Code with GitHub Copilot**: `.vscode/mcp.json` in your workspace. This form prompts
 for the token and stores it in VS Code's secret storage rather than in the file:
 
 ```json
